@@ -1,0 +1,82 @@
+Kotitehtävä 1
+
+Harjoitusympäristö: Suoritin harjoitusta kotonani 30.3. - 5.4. välisenä aikana. Harjoituksessa on käytetty Xubuntu 10.04 LTS 64bit käyttöjärjestelmää live-usb tikulta.
+
+Kone: Packard Bell
+Suoritin: Intel Celeron
+Käyttöjärjestelmä: Windows Vista
+
+
+Aloitin harjoituksen hakemalla uusimmat päivitykset komennolla:
+
+sudo apt-get update
+
+Kun kone oli päivitetty asensin puppetin koneelle syöttämällä komennon:
+
+sudo apt-get install puppet
+
+Tarkoituksena on siis rakentaa puppet moduuli, joka asentaa ssh-palvelun.
+
+Tämän jälkeen loin kansiorakenteen testimoduulia varten komennoilla:
+
+sudo mkdir -p puppet/modules/sshd/manifests
+cd puppet
+sudo nano modules/sshd/manifests/init.pp
+
+Tänne kansioon siis luodaan itse moduuli.
+
+Kansion rakenne on seuraava:
+
+class sshd {
+	package {”openssh-server”:
+		ensure => ”installed”,
+	}
+
+Tämän pitäisi siis asentaa ssh-palvelu.
+
+Koitin ajaa moduulia komennolla:
+
+puppet apply --modulepath modules/ -e 'class {"sshd":}'
+
+Sain kuitenkin virheilmoituksen:
+
+Error: Could not parse for environment production: Syntx error at '}' at line 1 on node xubuntu.zyxel.com
+
+Kävin lisäämässä init.pp tiedoston loppuu vielä ”}”- merkin.
+
+Koitin ajaa komentoa uudelleen, mutta sama virheilmoitus ilmaantui.
+
+Tämän jälkeen kävin lisäämässä init.pp-tiedostoon uuden osuuden:
+
+service { ‘ssh’:
+                ensure => ‘running’,
+                enable => ‘true’,
+                require => Package["openssh-server"],
+}
+
+Nyt koitin jälleen ajaa moduulia ja tällä kertaa päästiinkin ensimmäisestä virheilmoituksesta eroon.
+
+Sain kuitenkin uuden ilmoituksen:
+
+Error: /etc/apt/sources.list contains a cdrom source; not installing. Use 'allowcdrom' to override this failure.
+Error: /Stage[main]/Testi/Package[openssh-server]/ensure: change from purged to present failed: /etc/apt/sources.list contains a cdrom source; not installing. Use 'allowcdrom' to override this failure.
+Notice: /Stage[main]/Testi/Service[ssh]: Dependency Package[openssh-server] has failures: true
+Warning: /Stage[main]/Testi/Service[ssh]: Skipping because of failed dependencies
+
+Kävin siis pyyhkimässä sources.list tiedostosta ensimmäisen rivin.
+
+Ajoin jälleen moduulin käynnistyskomennon uudelleen, jonka jälkeen sain seuraavan virheilmoituksen:
+
+Error: Execution of '/usr/bin/apt-get -q -y -o DPkg::Options::=--force-confold install openssh-server' returned 100: E: Could not open lock file /var/lib/dpkg/lock - open (13: Permission denied)
+E: Unable to lock the administration directory (/var/lib/dpkg/), are you root?
+
+Ajoin vielä kerran moduulin käynnistyskomennon lisäten ”sudo” sen eteen. Nyt moduuli näytti menevän läpi, eikä virheilmoituksia tullut.
+
+Kokeilin komennolla, että asentuiko ssh:
+
+xubuntu@xubuntu:~/puppet$ service sshd status
+sshd: unrecognized service
+
+Jostain syystä ssh ei siis ollut asentunut, vaikka virheilmoituksia ei ollut tullut.
+
+
