@@ -1,0 +1,101 @@
+Aloitettiin asentamalla kolme konetta VirtualBoxiin: kaksi Xubuntu työasemaa ja yksi Ubuntu server.
+
+Haettii asennuspaketti komennolla:
+
+wget https://apt.puppetlabs.com/puppetlabs-release-pc1-trusty.deb
+
+Tämän jälkeen asennetaan haettu paketti komennolla:
+
+sudo dpkg -i puppetlabs-release-pc1-trusty.deb
+
+Tämän jälkeen päivitettiin kone ajamalla komento:
+
+sudo apt-get update
+
+Asennetaan puppetserver palvelimelle komennolla:
+
+sudo apt-get install puppetserver
+
+Asennetaan työasemille puppet-agent komennolla:
+
+sudo apt-get install puppet-agent
+
+Muutin tämän jälkeen koneiden nimet hieman helpommin muistettaviksi. Koneen hostname saadaan selville komennolla:
+
+hostname  tai siirtymällä kansioon /etc/hostname
+
+Muutin palvelimen nimen srv:ksi komennolla:
+
+sudo hostname srv
+
+Työasemien nimet ws1 ja  ws2  samalla komennolla, kuin palvelimen nimeä lukuunottamatta.
+
+Tämän jälkeen käytiin muokkaamassa /etc/hosts tiedostoa kertomalla koneelle hostnamea vastaava iposoite. Lisättiin tiedoston loppuun kaikille kolmelle koneelle oma rivi, joka oli muotoa:
+
+koneenIPosoite koneenNimi
+
+Esim. serverin hosts-tiedosto lisättiin seuraavat rivit:
+
+172.28.171.217 srv
+172.28.271.217 ws1
+172.28.171.202 ws2
+
+
+Nyt päästään varsinaiseen puppetin konfiguroitiin. Tämän jälkeen työasemille täytyy kertoa, mikä tai minkäniminen kone on puppet master. Tämän konfiguraatio tapahtuu työasemilla tiedostoon /etc/puppetlabs/puppet/puppet.conf
+
+Lisätään tiedoston loppuun seuraavat rivit:
+
+[main]
+server = srv
+
+Tämä konfiguraatio tehtiin siis molemmille työasemille (tai kaikille niille koneille, jotka halutaan ottaa puppet masterin ohjailtaviksi).
+
+Nyt käynnistetään puppet master uudelleen, jotta työasemat saavat siihen yhteyden komennolla:
+
+sudo /etc/init.d/puppetserver restart
+
+Saatiin virheilmoitus ”…fail!”. Koitin ajaa komentoa uudelleen ja sama virheilmoitus toistui.
+
+Tarkistin puppetserverin tilan komennolla:
+
+service puppetserver status. 
+
+Saatiin tuloste, jonka mukaan puppetserver ei ole käynnissä.
+
+Koitin käynnistää puppetserveriä komennolla sudo /etc/init.d/puppetserver start. Tällä kertaa ei tullut minkäänlaista ilmitusta ja testasin jälleen palvelun tilan. Nyt sain tulosteeksi ”puppetserver is running”.
+
+Tämän jälkeen koitin luoda työasemilla SSL avaimia komennolla:
+
+puppet agent -t
+
+Sain virheilmoituksen, että puppet ei ole asennettu ja terminaali ehdotti puppet-common pakettia asennettavaksi. Asensin sen komennolla:
+
+sudo apt-get install puppet-common
+
+Tämän jälkeen syötin uudelleen avaimenluontikomennon ja sain virheilmoituksen:
+
+”Error: Could not request certificate: getaddrinfo: Name or service not known”
+
+Kävin ensin muokkaamassa kaikkien koneiden hosts-tiedostoon koneiden koko osoitteen mallia ”ws1.tielab.haaga-helia.fi”.
+
+Sitten kävin muokkaamassa /etc/puppetlabs/puppet/puppet.conf tiedostoon serveriksi ”srv.tielab.haaga-helia.fi”. Tämän jälkeen koitin ajaan avaimenluontikomentoa uudestaa, mutta sama virheilmoitus ilmaantui. Selvitin, että komento tulee ajaa sudona, jotta se käy tuon äsken muokatun konfiguraatiotiedoston läpi. Tämän jälkeen ensimmäinen virheilmoitus poistui, mutta toinen pysyi: 
+
+”Exiting; no certificate found and waitforcert is disabled”
+
+Poistin ssl tiedoston komennolla:
+
+rm -r /etc/puppetlabs/puppet/ssl
+
+Nyt avaimien luonti onnistui molemmille työasemille. Kävin hyväksymässä ne palvelimella komennolla:
+
+puppet cert sign –all
+
+
+
+
+https://docs.puppet.com/puppet/latest/reference/ssl_regenerate_certificates.html
+
+
+
+
+
