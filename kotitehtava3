@@ -1,4 +1,13 @@
-Aloitettiin asentamalla kolme konetta VirtualBoxiin: kaksi Xubuntu 14.04 työasemaa ja yksi Ubuntu server.
+Harjoitusta tehtiin 13.4.2016 ja 20.4.2016.
+Sijainti: Haaga-Helia amk, Pasila, luokkahuone 5004
+
+YMPÄRISTÖN ASENNUS
+
+Aloitettiin asentamalla kolme konetta VirtualBoxiin: kaksi Xubuntu 14.04 työasemaa ja yksi Ubuntu server, noutamalla ne verkkosijainnista (\\helga\ict).
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+PUPPETIN ASENNUS
 
 Haettii asennuspaketti komennolla:
 
@@ -20,6 +29,10 @@ Asennetaan työasemille puppet-agent komennolla:
 
 sudo apt-get install puppet-agent
 
+--------------------------------------------------------------------------------------------------------------------------------
+
+KONEIDEN NIMIEN MUOKKAUS
+
 Muutin tämän jälkeen koneiden nimet hieman helpommin muistettaviksi. Koneen hostname saadaan selville komennolla:
 
 hostname  tai siirtymällä kansioon /etc/hostname
@@ -40,6 +53,9 @@ Esim. serverin hosts-tiedosto lisättiin seuraavat rivit:
 172.28.271.217 ws1
 172.28.171.202 ws2
 
+--------------------------------------------------------------------------------------------------------------------------------
+
+PUPPETIN KONFIGUROINTI
 
 Nyt päästään varsinaiseen puppetin konfiguroitiin. Tämän jälkeen työasemille täytyy kertoa, mikä tai minkäniminen kone on puppet master. Tämän konfiguraatio tapahtuu työasemilla tiedostoon /etc/puppetlabs/puppet/puppet.conf
 
@@ -63,6 +79,24 @@ service puppetserver status.
 Saatiin tuloste, jonka mukaan puppetserver ei ole käynnissä.
 
 Koitin käynnistää puppetserveriä komennolla sudo /etc/init.d/puppetserver start. Tällä kertaa ei tullut minkäänlaista ilmitusta ja testasin jälleen palvelun tilan. Nyt sain tulosteeksi ”puppetserver is running”.
+
+Se ei kuitenkaan pysynyt päällä kovinkaan kauaa ja koitin etsiä toista ratkaisua.
+
+Syötin seuraavat komennot:
+
+sudo puppet resource service puppet ensure=stopped
+sudo puppet resource service puppetserver ensure=stopped
+sudo rm -r /etc/puppetlabs/puppet/ssl
+sudo puppet cert list -a (tuloste: Notice: Signed certificate request for ca)
+sudo puppet master --no-daemonize --verbose
+sudo puppet resource service puppetserver ensure=running
+sudo puppet resource service puppet ensure=running
+
+Nyt uudelleenkäynnistyskomento saatiin toimimaan.
+
+------------------------------------------------------------------------------------------------------------------------------
+
+SSL AVAIMET JA SERTIFIKAATTI
 
 Tämän jälkeen koitin luoda työasemilla SSL avaimia komennolla:
 
@@ -90,10 +124,44 @@ Nyt avaimien luonti onnistui molemmille työasemille. Kävin hyväksymässä ne 
 
 puppet cert sign –all
 
+-------------------------------------------------------------------------------------------------------------------------------
+
+MODUULIEN LUONTI
+
+Luodaan site.pp
+
+/etc/puppetlabs/code/environments/production/manifests/site.pp
+
+Lisätään sinne seuraavat rivit:
+
+node ws1  {
+	package {'openssh-server':
+	ensure => 'installed',
+	}
+}
+
+node ws2 {
+	user {'Ville':
+	ensure => 'present',
+	name => 'ville',
+	home => '/home/ville',
+	managehome => 'yes',
+	password => 'ENKERROSULLE',
+	}
+}
+
+Nyt voitiin koittaa ajaa näitä moduleja työasemilla komennolla:
+
+puppet agent -t
 
 
+Lähteet:
 
 https://docs.puppet.com/puppet/latest/reference/ssl_regenerate_certificates.html
+http://abeak.blogspot.fi/2015/02/fixing-puppet-exiting-no-certificate.html
+https://ask.puppet.com/question/4160/could-not-request-certificate-getaddrinfo/
+https://linuxconfig.org/puppet-agent-exiting-no-certificate-found-and-waitforcert-is-disabled-solution
+http://thejmlcontinuum.blogspot.fi/2013/08/puppet-exiting-no-certificate-found-and.html
 
 
 
