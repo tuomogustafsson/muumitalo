@@ -52,4 +52,58 @@ localhost, jolloin avautui apache2-oletussivu.
 
 -----------------------------------------------------------------------------------------------------------------------------
 
+DEFINED TYPES LUONTI
 
+Luotiin uusi etusivu.pp tekstitiedosto komennolla:
+
+sudoedit puppet/modules/apache/manifests/index.pp
+
+Tänne lisättiin seuraavat rivit:
+
+define apache::etusivu ($title) {
+
+        file {"/var/www/html/index.html":
+                content => template("apache/etusivu.html"),
+        }
+
+}
+
+Lisätään init.pp tiedostoon seuraavat rivit, jotta se osaa hyödyntää tuota tyyppiä:
+
+apache::etusivu { 'test':
+                title => 'Dis is tu hard',
+        }
+
+Viimeisenä luotiin index.html tiedosto. Tätä varten loin ensin oman hakemiston templateille komennolla:
+
+sudo mkdir puppet/modules/apache/templates
+
+Ja tämän jälkeen tiedosto komennolla:
+
+sudoedit index.html
+
+Sen sisältö näyttää seuraavalta:
+
+<h1>
+<%= @title %>
+</h1>
+
+Tuossa viittaus titleen ohjataan siis init.pp tiedostoon ja se saa rivillä 74 näkyvän sisällön.
+
+Nyt voidaan jälleen koittaa moduulin toimivuutta komennolla:
+
+$ sudo puppet apply --modulepath modules/ -e 'class {"lamp":}'
+
+Komento onnistuu ongelmitta. Käydään vielä osoitteessa localhost katsomassa onnistuttiinko.
+
+Localhost-osoite näyttää nyt sivuston, jossa init.pp tiedostoon määrittelemäni h1-otsikko näkyy.
+
+Tässä vielä tree-komento ajettuna puppet-hakemistossa.
+.
+└── modules
+    └── apache
+        ├── manifests
+        │   ├── etusivu.pp
+        │   └── init.pp
+        └── templates
+            └── etusivu.html
