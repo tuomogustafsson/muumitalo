@@ -56,7 +56,7 @@ DEFINED TYPES LUONTI
 
 Luotiin uusi etusivu.pp tekstitiedosto komennolla:
 
-sudoedit puppet/modules/apache/manifests/index.pp
+sudoedit puppet/modules/apache/manifests/etusivu.pp
 
 Tänne lisättiin seuraavat rivit:
 
