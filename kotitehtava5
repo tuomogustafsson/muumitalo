@@ -1,0 +1,40 @@
+TEHTÄVÄNKUVAUS
+
+Harjoituksen tarkoituksena oli luoda puppet moduuli, joka asentaa jonkin palvelimen ja tämän jälkeen lisätä siihen defined type.
+Harjoituksessa loin ensin moduulin, joka asentaa Apache2-palvelimen ja tämän jälkeen tyypin, joka muokkaa oletussivua.
+
+--------------------------------------------------------------------------------------------------------------------------------
+
+HARJOITUSYMPÄRISTÖ
+
+Suoritin harjoituksen kotonani 2.5.2016 alkaen kello 16.00. Suoritin tehtävää Xubuntu 14.04 LTS live-usb:ltä.
+
+Macbook Pro 13" mid-2010
+Käyttöjärjestelmä: Maverics
+RAM: 4GB
+
+------------------------------------------------------------------------------------------------------------------------------
+
+PUPPETIN ASENNUS
+
+Aloitin harjoituksen asentamalla koneelle puppetin komennolla:
+
+sudo apt-get install -y puppet
+
+Tämän jälkeen luotiin kansiorakenne komennolla:
+
+sudo mkdir -p puppet/modules/apache/manifests
+
+Manifests kansioon luotiin tekstitiedosto init.pp, jonne laitettiin seuraavanlainen sisältö:
+
+class apache {
+        package { 'apache2':
+                ensure => "installed",
+                allowcdrom => 'true',
+        }
+
+        service { 'apache2':
+                ensure => 'running',
+                enable => 'true',
+        }
+}
