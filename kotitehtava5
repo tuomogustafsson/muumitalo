@@ -15,7 +15,7 @@ RAM: 4GB
 
 ------------------------------------------------------------------------------------------------------------------------------
 
-PUPPETIN ASENNUS
+PUPPETIN ASENNUS JA APACHE MODUULIN LUONTI
 
 Aloitin harjoituksen asentamalla koneelle puppetin komennolla:
 
@@ -38,3 +38,18 @@ class apache {
                 enable => 'true',
         }
 }
+
+Ajettiin moduuli komennolla:
+
+sudo puppet apply --modulepath modules/ -e 'class {"apache":}'
+
+Testattiin, että asennus onnistui, komennolla:
+
+sudo service apache2 status
+
+Saatiin tulosteeksi, että apache2 is running eli apachen asennus onnistui ja vierailtiin vielä selaimella osoitteessa
+localhost, jolloin avautui apache2-oletussivu.
+
+-----------------------------------------------------------------------------------------------------------------------------
+
+
