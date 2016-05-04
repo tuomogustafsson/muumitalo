@@ -92,7 +92,7 @@ Tuossa viittaus titleen ohjataan siis init.pp tiedostoon ja se saa rivillä 74 n
 
 Nyt voidaan jälleen koittaa moduulin toimivuutta komennolla:
 
-$ sudo puppet apply --modulepath modules/ -e 'class {"lamp":}'
+$ sudo puppet apply --modulepath modules/ -e 'class {"apache":}'
 
 Komento onnistuu ongelmitta. Käydään vielä osoitteessa localhost katsomassa onnistuttiinko.
 
