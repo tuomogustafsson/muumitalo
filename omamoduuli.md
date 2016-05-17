@@ -1,23 +1,31 @@
-lass vagrant {
-        Package { ensure => "installed", allowcdrom => "true" }
+class vagrant {
+
+         Package { ensure => "installed", allowcdrom => "true" }
 
         package { "virtualbox": }
         package { "vagrant": }
 
-        service {'virtualbox':
-                enable => "true",
-                require => Package["virtualbox"],
+        file {'/home/xubuntu/vagrant_project':
+        ensure => 'directory',
+        owner => 'root',
+        mode => '0770',
         }
 
-        service {'vagrant':
-                enable => "true",
-                require => Package["vagrant"],
+        file {'/home/xubuntu/vagrant_project/Vagrantfile':
+        content => template("vagrant/Vagrantfile"),
         }
-
-        exec { 'add_box':
-        command => 'vagrant box add precise32 http://files/vagrantup.com/precise32.box',
-        path    => ['/bin','/sbin/','/usr/bin/','/usr/sbin/']
-  }
 }
+
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+
+config.vm.box = "precise32"
+
+config.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+end
+
+
 
 http://www.olindata.com/blog/2014/07/installing-vagrant-and-virtual-box-ubuntu-1404-lts
