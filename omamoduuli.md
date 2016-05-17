@@ -154,7 +154,7 @@ Tämän jälkeen muokkasin init.pp tiedostoa ja lisäsin sinne file-luokan, joho
         
 Tämä aiheuttaa tietysti ristiriidan, koska en saanut exec-luokkaa toimimaan ja yllä luotu file-luokan olisi tarkoitus muokata tuolla exec-komennolla luotua Vagrantfile:ä. Luokan avulla saatiin kyllä luotua tuo Vagrantfile oikeaan paikkaan, mutta koska "vagrant init"- komentoa ei ole ajettu, ei sillä tee mitään ja terminaali antaa virheilmoituksen, jonka mukaan tuo komento tulisi ajaa. Ajoin siis komennon, mutta se ei suostunut menemään läpi, koska kyseinen tiedosto oli jo luotu moduulin avulla. Jouduin siis poistamaan sen ja ajamaan komennon. Nyt kun moduuli ajettiin uudelleen, oikea tiedosto muokkaantui ja sai haluamani arvot.
 
-##Vagrantin testaus
+###Vagrantin testaus
 
 Nyt voitiin testata, onnistuiko konfigurointi. Tämä toteutettiin komennolla:
 
