@@ -19,15 +19,15 @@ Käyttöjärjestelmä OS X 10.9.5
 
 Aloitin tehtävän käynnistämällä Xubuntu 14.04 live-usb:lta. Tämän jälkeen avasin terminaalin ja ajoin komennon, jonka avulla näppäimistön kieli saatii vaihdettua suomeksi.
 
-'setxkbmap fi'
+`setxkbmap fi`
 
 Tämän jälkeen päivitin ohjelmiston ajamalla update komennon.
 
-'sudo apt-get update'
+`sudo apt-get update`
 
 Tämän jälkeen asensin vielä puppetin, jotta päästiin aloittamaan itse moduulin teko.
 
-'sudo apt-get install puppet -y'
+`sudo apt-get install puppet -y`
 
 ----
 
@@ -37,19 +37,19 @@ Tämän moduulin tarkoituksena oli asentaa koneelle kaksi ohjelmistoa: VirtualBo
 
 Aloitin rakentamalla oikeanlaisen tiedostorakenteen. Ensin loin puppet kansion.
 
-'mkdir puppet'
+`mkdir puppet`
 
 Tämän jälkeen siirryin juuri luotuun puppet kansioon.
 
-'cd puppet'
+`cd puppet`
 
 Loin puppet kansioon tarvittavat kansiot.
 
-'mkdir -p modules/vagrant/manifests/'
+`mkdir -p modules/vagrant/manifests/`
 
 Manifest kansioon loin init.pp tiedoston, johon suurin osa moduulista kirjoitettaisiin.
 
-'nano modules/vagrant/manifests/init.pp'
+`nano modules/vagrant/manifests/init.pp`
 
 Lisäsin ensin init.pp tiedostoon vain pakettien asennuksia varten tarvittavat rivit.
 
@@ -62,7 +62,7 @@ class vagrant {
 
 Tämän jälkeen koitin moduulin toimivuutta tässä vaiheessa ajamalla sen.
 
-'sudo puppet apply --modulepath modules/ -e 'class {"vagrant":}''
+`sudo puppet apply --modulepath modules/ -e 'class {"vagrant":}'`
 
 VAGRANTFILE_API_VERSION = "2"
 
