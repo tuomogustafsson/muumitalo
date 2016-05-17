@@ -175,5 +175,10 @@ SSH-yhteyden todettiin toimivan, kun saatiin seuraava tuloste:
 `vagrant@precise32:~$`
 
 ---
+##Lähteet
 
-http://www.olindata.com/blog/2014/07/installing-vagrant-and-virtual-box-ubuntu-1404-lts
+ Krishna Prajapati. Installing Vagrant and Virtual box on Ubuntu 14.04 LTS. http://www.olindata.com/blog/2014/07/installing-vagrant-and-virtual-box-ubuntu-1404-lts
+ 
+ Puppet CookBook. http://www.puppetcookbook.com/posts/exec-a-command-in-a-manifest.html
+ 
+ *Moduuli on osa Tero Karvisen kurssia "Linuxin keskitetty hallinta", http://terokarvinen.com/2016/aikataulu-–-linuxin-keskitetty-hallinta-ict4tn011-9-loppukevat-2016*
