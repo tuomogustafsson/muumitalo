@@ -1,3 +1,5 @@
+##Oma moduuli
+
 class vagrant {
 
          Package { ensure => "installed", allowcdrom => "true" }
