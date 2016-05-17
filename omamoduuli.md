@@ -1,4 +1,4 @@
-###Oman moduulin toteutus
+#Oman moduulin toteutus
 
 ##Harjoitusympäristö
 
@@ -35,7 +35,7 @@ Tämän jälkeen asensin vielä puppetin, jotta päästiin aloittamaan itse modu
 
 Tämän moduulin tarkoituksena oli asentaa koneelle kaksi ohjelmistoa: VirtualBox sekä Vagrant. Tämän jälkeen Vagrantille tehtäisiin tarvittavat konfiguroinnit virtuaalikoneiden luontia varten.
 
-#Tiedostorakenne
+###Tiedostorakenne
 
 Aloitin rakentamalla oikeanlaisen tiedostorakenteen. Ensin loin puppet kansion.
 
@@ -53,7 +53,7 @@ Manifest kansioon loin init.pp tiedoston, johon suurin osa moduulista kirjoitett
 
 `nano modules/vagrant/manifests/init.pp`
 
-#Pakettien asennus
+###Pakettien asennus
 
 Lisäsin ensin init.pp tiedostoon vain pakettien asennuksia varten tarvittavat rivit.
 
@@ -78,7 +78,7 @@ Ohjelma avautuin, joten VirtualBox oli saatu asennettua onnistuneesti.
 
 Terminaali antoi ison läjän mahdollisia komentoja, joten Vagrant oli asentunut onnistuneesti.
 
-#Projektin kansio
+###Projektin kansio
 
 Tämän jälkeen Vagrant vaatii, että sille luodaan oma kansio. Tämä toteutettii lisäämällä uusi file-luokka init.pp:hen.
 
@@ -97,7 +97,7 @@ Moduulin ajo onnistui jälleen ja tarkistin vielä, että kansio oli luotu.
 
 Kyseinen vagrant_project-kansio löytyi xubuntu-käyttäjän home-kansiosta, joten kaikki toimi tässä vaiheessa, kuten pitikin.
 
-#Vagrant init
+###Vagrant init
 
 Tämän jälkeen Vagrant vaatii, että sille luodaan Vagrantfile, joka toimii Vagrantin konfiguraatiotiedostona.
 
@@ -126,7 +126,7 @@ Siirryin siis tuohon luotuun vagrant_project kansioon ja ajoin komennon.
 
 Nyt Vagrantfile tiedosto saatiin luotua onnistuneesti.
 
-#Vagrantfile konfiguraatio
+###Vagrantfile konfiguraatio
 
 Halusin, että konfiguraatiotiedosto saa haluamani arvot, joten päätin luoda templaten, jonka pohjalta Vagrant konfiguroitaisiin. Loin siis uuden templates hakemiston vagrant-hakemiston alle.
 
