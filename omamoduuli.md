@@ -19,3 +19,5 @@ lass vagrant {
         path    => ['/bin','/sbin/','/usr/bin/','/usr/sbin/']
   }
 }
+
+http://www.olindata.com/blog/2014/07/installing-vagrant-and-virtual-box-ubuntu-1404-lts
