@@ -58,10 +58,9 @@ Manifest kansioon loin init.pp tiedoston, johon suurin osa moduulista kirjoitett
 Lisäsin ensin init.pp tiedostoon vain pakettien asennuksia varten tarvittavat rivit.
 
 `class vagrant {`
-
-         Package { ensure => "installed", allowcdrom => "true" }
-         package { "virtualbox": }
-         package { "vagrant": }
+         `Package { ensure => "installed", allowcdrom => "true" }`
+         `package { "virtualbox": }`
+         `package { "vagrant": }`
 `}`
 
 Tämän jälkeen koitin moduulin toimivuutta tässä vaiheessa ajamalla sen.
@@ -105,9 +104,9 @@ Tämän jälkeen Vagrant vaatii, että sille luodaan Vagrantfile, joka toimii Va
 Koitin lisätä moduuliin tämän toiminnon exec-luokkaa hyväksi käyttäen. Lisäsin init.pp seuraavat rivit.
 
 `exec { 'init':`
-    `command => 'vagrant init',`
-    `cwd => '/home/xubuntu/vagrant_project',`
-    `path    => '/usr/local/bin/:/bin/',`
+         `command => 'vagrant init',`
+         `cwd => '/home/xubuntu/vagrant_project',`
+         `path    => '/usr/local/bin/:/bin/',`
   `}`
   
 Koitin jälleen ajaa moduulia, mutta tällä kertaa sain tulosteeksi virheilmoituksen:
