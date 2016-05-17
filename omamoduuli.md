@@ -1,22 +1,68 @@
-##Oma moduuli
+###Oman moduulin toteutus
+
+##Harjoitusympäristö
+
+Suoritin harjoitusta kotonani 17.5.2016 kannettavalla tietokoneellani.
+
+Harjoituksessa on käytetty Xubuntu 14.04 LTS 64bit live-usb tikkua.
+
+Macbook Pro 13" mid-2010
+
+Prosessori  2,4 GHz Intel Core 2 Duo
+Muisti  4 Gt 1067 MHz:n DDR3
+Näytönohjain  NVIDIA GeForce 320M 256 Mt
+Käyttöjärjestelmä OS X 10.9.5
+
+----
+
+##Aloitusasetukset
+
+Aloitin tehtävän käynnistämällä Xubuntu 14.04 live-usb:lta. Tämän jälkeen avasin terminaalin ja ajoin komennon, jonka avulla näppäimistön kieli saatii vaihdettua suomeksi.
+
+'setxkbmap fi'
+
+Tämän jälkeen päivitin ohjelmiston ajamalla update komennon.
+
+'sudo apt-get update'
+
+Tämän jälkeen asensin vielä puppetin, jotta päästiin aloittamaan itse moduulin teko.
+
+'sudo apt-get install puppet -y'
+
+----
+
+##Oman moduulin rakennus
+
+Tämän moduulin tarkoituksena oli asentaa koneelle kaksi ohjelmistoa: VirtualBox sekä Vagrant. Tämän jälkeen Vagrantille tehtäisiin tarvittavat konfiguroinnit virtuaalikoneiden luontia varten.
+
+Aloitin rakentamalla oikeanlaisen tiedostorakenteen. Ensin loin puppet kansion.
+
+'mkdir puppet'
+
+Tämän jälkeen siirryin juuri luotuun puppet kansioon.
+
+'cd puppet'
+
+Loin puppet kansioon tarvittavat kansiot.
+
+'mkdir -p modules/vagrant/manifests/'
+
+Manifest kansioon loin init.pp tiedoston, johon suurin osa moduulista kirjoitettaisiin.
+
+'nano modules/vagrant/manifests/init.pp'
+
+Lisäsin ensin init.pp tiedostoon vain pakettien asennuksia varten tarvittavat rivit.
 
 class vagrant {
 
          Package { ensure => "installed", allowcdrom => "true" }
-
-        package { "virtualbox": }
-        package { "vagrant": }
-
-        file {'/home/xubuntu/vagrant_project':
-        ensure => 'directory',
-        owner => 'xubuntu',
-        mode => '0770',
-        }
-
-        file {'/home/xubuntu/vagrant_project/Vagrantfile':
-        content => template("vagrant/Vagrantfile"),
-        }
+         package { "virtualbox": }
+         package { "vagrant": }
 }
+
+Tämän jälkeen koitin moduulin toimivuutta tässä vaiheessa ajamalla sen.
+
+'sudo puppet apply --modulepath modules/ -e 'class {"vagrant":}''
 
 VAGRANTFILE_API_VERSION = "2"
 
