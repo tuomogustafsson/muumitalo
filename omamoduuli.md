@@ -111,12 +111,12 @@ Koitin lisätä moduuliin tämän toiminnon exec-luokkaa hyväksi käyttäen. Li
   
 Koitin jälleen ajaa moduulia, mutta tällä kertaa sain tulosteeksi virheilmoituksen:
 
-`Notice: /Stage[main]/Vagrant/Exec[init]/returns: /usr/lib/ruby/vendor_ruby/vagrant/environment.rb:592:in ``expand_path':` `couldn't find HOME environment -- expanding ``~' (ArgumentError)`
-`Notice: /Stage[main]/Vagrant/Exec[init]/returns: 	from /usr/lib/ruby/vendor_ruby/vagrant/environment.rb:592:in ``setup_home_path'`
-`Notice: /Stage[main]/Vagrant/Exec[init]/returns: 	from /usr/lib/ruby/vendor_ruby/vagrant/environment.rb:110:in ``initialize'`
-`Notice: /Stage[main]/Vagrant/Exec[init]/returns: 	from /usr/bin/vagrant:105:in ``new'`
-`Notice: /Stage[main]/Vagrant/Exec[init]/returns: 	from /usr/bin/vagrant:105:in ``<main>'`
-`Error: vagrant init returned 1 instead of one of [0]`
+`Notice: /Stage[main]/Vagrant/Exec[init]/returns: /usr/lib/ruby/vendor_ruby/vagrant/environment.rb:592:in ``expand_path':` `couldn't find HOME environment -- expanding ``~' (ArgumentError)`  
+`Notice: /Stage[main]/Vagrant/Exec[init]/returns: 	from /usr/lib/ruby/vendor_ruby/vagrant/environment.rb:592:in ``setup_home_path'`  
+`Notice: /Stage[main]/Vagrant/Exec[init]/returns: 	from /usr/lib/ruby/vendor_ruby/vagrant/environment.rb:110:in ``initialize'`  
+`Notice: /Stage[main]/Vagrant/Exec[init]/returns: 	from /usr/bin/vagrant:105:in ``new'`  
+`Notice: /Stage[main]/Vagrant/Exec[init]/returns: 	from /usr/bin/vagrant:105:in ``<main>'`  
+`Error: vagrant init returned 1 instead of one of [0]`  
 `Error: /Stage[main]/Vagrant/Exec[init]/returns: change from notrun to 0 failed: vagrant init returned 1 instead of one of [0]`
 
 Koitin ratkaista ongelmaa, mutta en keksinyt tähän mitään ratkaisua, joten ajoin komennon käsin.
@@ -140,16 +140,16 @@ Templates hakemistoon loin uuden tiedoston Vargantfile.
 
 Lisäsin tiedstoon seuraavat rivit:
 
-`VAGRANTFILE_API_VERSION = "2"`
-`Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|`
-`config.vm.box = "precise32"`
-`config.vm.box_url = "http://files.vagrantup.com/precise32.box"`
+`VAGRANTFILE_API_VERSION = "2"`  
+`Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|`  
+`config.vm.box = "precise32"`  
+`config.vm.box_url = "http://files.vagrantup.com/precise32.box"`  
 `end`
 
 Tämän jälkeen muokkasin init.pp tiedostoa ja lisäsin sinne file-luokan, johon tuli seuraava sisältö:
 
-`file {'/home/xubuntu/vagrant_project/Vagrantfile':`
-        `content => template("vagrant/Vagrantfile"),`
+`file {'/home/xubuntu/vagrant_project/Vagrantfile':`  
+        `content => template("vagrant/Vagrantfile"),`  
         `}`
         
 Tämä aiheuttaa tietysti ristiriidan, koska en saanut exec-luokkaa toimimaan ja yllä luotu file-luokan olisi tarkoitus muokata tuolla exec-komennolla luotua Vagrantfile:ä. Luokan avulla saatiin kyllä luotua tuo Vagrantfile oikeaan paikkaan, mutta koska "vagrant init"- komentoa ei ole ajettu, ei sillä tee mitään ja terminaali antaa virheilmoituksen, jonka mukaan tuo komento tulisi ajaa. Ajoin siis komennon, mutta se ei suostunut menemään läpi, koska kyseinen tiedosto oli jo luotu moduulin avulla. Jouduin siis poistamaan sen ja ajamaan komennon. Nyt kun moduuli ajettiin uudelleen, oikea tiedosto muokkaantui ja sai haluamani arvot.
@@ -170,8 +170,8 @@ Kokeiltiin vielä ssh-yhteydellä komennolla:
 
 SSH-yhteyden todettiin toimivan, kun saatiin seuraava tuloste:
 
-`Welcome to your Vagrant-built virtual machine.`
-`Last login: Tue May 17 18:22:31 2016 from 10.0.2.2`
+`Welcome to your Vagrant-built virtual machine.`  
+`Last login: Tue May 17 18:22:31 2016 from 10.0.2.2`  
 `vagrant@precise32:~$`
 
 ---
