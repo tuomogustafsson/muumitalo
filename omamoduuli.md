@@ -57,10 +57,10 @@ Manifest kansioon loin init.pp tiedoston, johon suurin osa moduulista kirjoitett
 
 Lisäsin ensin init.pp tiedostoon vain pakettien asennuksia varten tarvittavat rivit.
 
-`class vagrant {`
-         `Package { ensure => "installed", allowcdrom => "true" }`
-         `package { "virtualbox": }`
-         `package { "vagrant": }`
+`class vagrant {`  
+         `Package { ensure => "installed", allowcdrom => "true" }`  
+         `package { "virtualbox": }`  
+         `package { "vagrant": }`  
 `}`
 
 Tämän jälkeen koitin moduulin toimivuutta tässä vaiheessa ajamalla sen.
@@ -82,10 +82,10 @@ Terminaali antoi ison läjän mahdollisia komentoja, joten Vagrant oli asentunut
 
 Tämän jälkeen Vagrant vaatii, että sille luodaan oma kansio. Tämä toteutettii lisäämällä uusi file-luokka init.pp:hen.
 
-`file {'/home/xubuntu/vagrant_project':`
-        `ensure => 'directory',`
-        `owner => 'xubuntu',`
-        `mode => '0770',`
+`file {'/home/xubuntu/vagrant_project':`  
+        `ensure => 'directory',`  
+        `owner => 'xubuntu',`  
+        `mode => '0770',`  
         `}`
         
 Testattiin jälleen moduulin toimivuutta ajamalla se.
@@ -103,10 +103,10 @@ Tämän jälkeen Vagrant vaatii, että sille luodaan Vagrantfile, joka toimii Va
 
 Koitin lisätä moduuliin tämän toiminnon exec-luokkaa hyväksi käyttäen. Lisäsin init.pp seuraavat rivit.
 
-`exec { 'init':`
-         `command => 'vagrant init',`
-         `cwd => '/home/xubuntu/vagrant_project',`
-         `path    => '/usr/local/bin/:/bin/',`
+`exec { 'init':`  
+         `command => 'vagrant init',`  
+         `cwd => '/home/xubuntu/vagrant_project',`  
+         `path    => '/usr/local/bin/:/bin/',`  
   `}`
   
 Koitin jälleen ajaa moduulia, mutta tällä kertaa sain tulosteeksi virheilmoituksen:
